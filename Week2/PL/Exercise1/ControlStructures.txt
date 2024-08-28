@@ -1,0 +1,76 @@
+Scenario 1: The bank wants to apply a discount to loan interest rates for customers above 60 years old.
+Question: Write a PL/SQL block that loops through all customers, checks their age, and if they are above 60, apply a 1% discount to their current loan interest rates.
+
+DECLARE
+    v_age NUMBER;
+    v_customer_id NUMBER;
+    v_interest_rate NUMBER;
+    v_new_interest_rate NUMBER;
+    CURSOR cur_customers IS
+        SELECT CustomerID, EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM DOB) AS Age
+        FROM Customers;
+BEGIN
+    FOR rec IN cur_customers LOOP
+        v_age := rec.Age;
+        v_customer_id := rec.CustomerID;
+        
+        IF v_age > 60 THEN
+            -- Loop through each loan of the customer and apply the discount
+            FOR loan_rec IN (SELECT LoanID, InterestRate FROM Loans WHERE CustomerID = v_customer_id) LOOP
+                v_interest_rate := loan_rec.InterestRate;
+                v_new_interest_rate := v_interest_rate - 1;
+                
+                UPDATE Loans
+                SET InterestRate = v_new_interest_rate
+                WHERE LoanID = loan_rec.LoanID;
+            END LOOP;
+        END IF;
+    END LOOP;
+    COMMIT;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------------
+
+Scenario 2: A customer can be promoted to VIP status based on their balance.
+Question: Write a PL/SQL block that iterates through all customers and sets a flag IsVIP to TRUE for those with a balance over $10,000.
+
+BEGIN
+    FOR rec IN (SELECT CustomerID FROM Customers WHERE Balance > 10000) LOOP
+        UPDATE Customers
+        SET IsVIP = 'TRUE'
+        WHERE CustomerID = rec.CustomerID;
+    END LOOP;
+    COMMIT;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------------
+
+Scenario 3: The bank wants to send reminders to customers whose loans are due within the next 30 days.
+Question: Write a PL/SQL block that fetches all loans due in the next 30 days and prints a reminder message for each customer.
+
+DECLARE
+    v_customer_id NUMBER;
+    v_due_date DATE;
+    v_name VARCHAR2(100);
+    CURSOR cur_loans IS
+        SELECT LoanID, CustomerID, EndDate
+        FROM Loans
+        WHERE EndDate BETWEEN SYSDATE AND SYSDATE + 30;
+BEGIN
+    FOR rec IN cur_loans LOOP
+        v_customer_id := rec.CustomerID;
+        v_due_date := rec.EndDate;
+
+        SELECT Name INTO v_name FROM Customers WHERE CustomerID = v_customer_id;
+        
+        DBMS_OUTPUT.PUT_LINE('Reminder: Loan for customer ' || v_name || ' (CustomerID: ' || v_customer_id || ') is due on ' || TO_CHAR(v_due_date, 'YYYY-MM-DD'));
+    END LOOP;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------------

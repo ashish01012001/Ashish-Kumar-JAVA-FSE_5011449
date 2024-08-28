@@ -1,0 +1,39 @@
+1) Explain the different types of linked lists (Singly Linked List, Doubly Linked List).
+Answer:
+Singly Linked List:
+
+Each node contains data and a reference (or link) to the next node in the sequence.
+Operations: Adding, deleting, and traversing nodes are relatively simple but require sequential access.
+Time Complexity:
+Insertion at the beginning: O(1)
+Insertion at the end (if tail is tracked): O(1)
+Deletion: O(n) (if searching for a specific node)
+Search: O(n)
+Traversal: O(n)
+
+Doubly Linked List:
+
+Each node contains data and references to both the next and the previous nodes.
+Operations: Easier to traverse both forwards and backwards, and deletion is more efficient since the previous node can be accessed directly.
+Time Complexity:
+Insertion: O(1) (for both ends if tail is tracked)
+Deletion: O(1) (if node reference is known)
+Search: O(n)
+Traversal: O(n)
+
+2) Analyze the time complexity of each operation.
+Answer:
+Add:
+O(n) (if appending to the end without tail reference)
+O(1) (if adding at the beginning or if tail reference is used)
+Search: O(n) (linear search)
+Traverse: O(n) (need to visit each node)
+Delete:
+O(n) (if searching for a specific node)
+O(1) (if the node reference is known)
+
+3) Discuss the advantages of linked lists over arrays for dynamic data.
+Answer:
+Dynamic Size: Linked lists can easily grow and shrink in size by adjusting pointers, without the need for resizing or copying the entire data structure, as with arrays.
+Efficient Insertions/Deletions: Inserting or deleting elements in a linked list is more efficient, especially if the node reference is known, as it avoids the need for shifting elements as in arrays.
+Memory Utilization: Linked lists allocate memory dynamically, which can lead to better utilization compared to the fixed size of arrays.

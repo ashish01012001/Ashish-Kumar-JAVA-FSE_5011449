@@ -1,0 +1,22 @@
+spring:
+  mvc:
+    contentnegotiation:
+      favor-path-extension: false
+      favor-parameter: false
+      favor-header: true
+      media-types:
+        json: application/json
+        xml: application/xml
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, env, httptrace # Customize which endpoints to expose
+      base-path: /actuator # Customize the base path
+  endpoint:
+    health:
+      show-details: always # Show health details
+    info:
+      enabled: true # Enable the info endpoint

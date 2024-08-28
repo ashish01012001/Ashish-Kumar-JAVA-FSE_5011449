@@ -1,0 +1,30 @@
+1) Explain the concept of recursion and how it can simplify certain problems.
+Answer:
+Recursion is a method of solving a problem where the solution depends on solving smaller instances of the same problem.
+A recursive function calls itself with a smaller or simpler input.
+Essential components:
+Base Case: The condition under which the recursion stops.
+Recursive Case: The part where the function calls itself with a modified parameter.
+
+Advantages of Recursion:
+
+Simplifies code for problems that can naturally be divided into similar subproblems.
+Useful for tasks such as tree traversal, factorial computation, and Fibonacci series.
+
+Disadvantages of Recursion:
+
+Can lead to excessive function calls and stack overflow if not implemented correctly.
+Inefficient for problems with overlapping subproblems, unless optimized with techniques like memoization.
+
+2) Discuss the time complexity of your recursive algorithm.
+Answer:
+Each call to calculateFutureValueRecursive generates another call with a decremented number of periods.
+The time complexity of this recursive solution is O(n), where 
+𝑛
+n is the number of periods.
+The space complexity is also O(n) due to the call stack.
+
+3) Explain how to optimize the recursive solution to avoid excessive computation.
+Answer:
+Memoization: Store previously computed results to avoid redundant calculations.
+Iterative Approach: Convert the recursion to an iterative solution to eliminate the overhead of function calls.

@@ -1,0 +1,77 @@
+Scenario 1: Automatically update the last modified date when a customer's record is updated.
+Question: Write a trigger UpdateCustomerLastModified that updates the LastModified column of the Customers table to the current date whenever a customer's record is updated.
+
+CREATE OR REPLACE TRIGGER UpdateCustomerLastModified
+BEFORE UPDATE ON Customers
+FOR EACH ROW
+BEGIN
+    :NEW.LastModified := SYSDATE;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------------
+
+Scenario 2: Maintain an audit log for all transactions.
+Question: Write a trigger LogTransaction that inserts a record into an AuditLog table whenever a transaction is inserted into the Transactions table.
+
+// Creating the AuditLog table ---
+CREATE TABLE AuditLog (
+    AuditID NUMBER PRIMARY KEY,
+    TransactionID NUMBER,
+    AccountID NUMBER,
+    TransactionDate DATE,
+    Amount NUMBER,
+    TransactionType VARCHAR2(10),
+    LogTimestamp DATE
+);
+
+// Creating the trigger ---
+CREATE OR REPLACE TRIGGER LogTransaction
+AFTER INSERT ON Transactions
+FOR EACH ROW
+BEGIN
+    INSERT INTO AuditLog (AuditID, TransactionID, AccountID, TransactionDate, Amount, TransactionType, LogTimestamp)
+    VALUES (AuditLog_SEQ.NEXTVAL, :NEW.TransactionID, :NEW.AccountID, :NEW.TransactionDate, :NEW.Amount, :NEW.TransactionType, SYSDATE);
+END;
+/
+
+// Sequence for the AuditID ---
+CREATE SEQUENCE AuditLog_SEQ START WITH 1 INCREMENT BY 1;
+
+
+-------------------------------------------------------------------------------------------------------------
+
+Scenario 3: Enforce business rules on deposits and withdrawals.
+Question: Write a trigger CheckTransactionRules that ensures withdrawals do not exceed the balance and deposits are positive before inserting a record into the Transactions table.
+
+CREATE OR REPLACE TRIGGER CheckTransactionRules
+BEFORE INSERT ON Transactions
+FOR EACH ROW
+DECLARE
+    v_balance NUMBER;
+BEGIN
+    -- Get the current balance of the account
+    SELECT Balance INTO v_balance
+    FROM Accounts
+    WHERE AccountID = :NEW.AccountID
+    FOR UPDATE OF Balance;
+    
+    -- Check if the transaction is a withdrawal
+    IF :NEW.TransactionType = 'Withdrawal' THEN
+        -- Ensure withdrawal does not exceed the balance
+        IF :NEW.Amount > v_balance THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Error: Insufficient funds for withdrawal.');
+        END IF;
+    -- Check if the transaction is a deposit
+    ELSIF :NEW.TransactionType = 'Deposit' THEN
+        -- Ensure deposit amount is positive
+        IF :NEW.Amount <= 0 THEN
+            RAISE_APPLICATION_ERROR(-20002, 'Error: Deposit amount must be positive.');
+        END IF;
+    END IF;
+END;
+/
+
+
+-------------------------------------------------------------------------------------------------------------

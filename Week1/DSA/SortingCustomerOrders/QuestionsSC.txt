@@ -1,0 +1,50 @@
+1) Explain different sorting algorithms (Bubble Sort, Insertion Sort, Quick Sort, Merge Sort).
+Answer: 
+Bubble Sort:
+
+Description: Repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The process is repeated until the list is sorted.
+Time Complexity:
+Best Case: O(n)
+Average Case: O(n²)
+Worst Case: O(n²)
+Space Complexity: O(1) (in-place sorting)
+Insertion Sort:
+
+Description: Builds the final sorted array one item at a time. It is much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort.
+Time Complexity:
+Best Case: O(n)
+Average Case: O(n²)
+Worst Case: O(n²)
+Space Complexity: O(1) (in-place sorting)
+Quick Sort:
+
+Description: Divides the list into two smaller sub-lists (the low elements and the high elements), and then recursively sorts the sub-lists. Uses a pivot element to partition the list.
+Time Complexity:
+Best Case: O(n log n)
+Average Case: O(n log n)
+Worst Case: O(n²) (rare, occurs with poor pivot choices)
+Space Complexity: O(log n) (due to recursion stack)
+Merge Sort:
+
+Description: Divides the array into halves, recursively sorts them, and then merges the sorted halves.
+Time Complexity:
+Best Case: O(n log n)
+Average Case: O(n log n)
+Worst Case: O(n log n)
+Space Complexity: O(n) (due to temporary arrays)
+
+2) Compare the performance (time complexity) of Bubble Sort and Quick Sort.
+Answer: 
+Bubble Sort:
+Best Case: O(n) (when the array is already sorted)
+Average Case: O(n²)
+Worst Case: O(n²)
+Quick Sort:
+Best Case: O(n log n)
+Average Case: O(n log n)
+Worst Case: O(n²)
+
+3) Discuss why Quick Sort is generally preferred over Bubble Sort.
+Answer:
+Efficiency: Quick Sort is significantly more efficient on average for large datasets due to its O(n log n) time complexity compared to Bubble Sort's O(n²).
+Scalability: Quick Sort handles larger datasets more efficiently, making it a better choice for real-world applications like an e-commerce platform.
